@@ -6,12 +6,12 @@ import random
 vacunatorios = [
     [[0, 1, 2, 3], 60, 0, 0],
     [[1, 0, 2, 3], 30, 0, 0],
-    [[2, 0, 1, 3, 4, 5], 60, 0, 0],
+    [[2, 0, 3, 4, 5], 60, 0, 0],
     [[3, 0, 1, 2, 4], 70, 0, 0],
     [[4, 2, 3, 5, 6, 7, 8], 130, 0, 0],
     [[5, 2, 4, 8], 50, 0, 0],
     [[6, 4, 7, 9, 10], 70, 0, 0],
-    [[7, 4, 5, 6, 8, 9], 60, 0, 0],
+    [[7, 4, 6, 8, 9], 60, 0, 0],
     [[8, 4, 5, 7, 9, 10], 50, 0, 0],
     [[9, 6, 7, 8, 10], 80, 0, 0],
     [[10, 6, 8, 9], 40, 0, 0]
@@ -27,6 +27,9 @@ def agregarProbabilidades(array, seed):
 
 def colocarVacunatorios(array):
     # Buscamos la mayor probabilidad en las comunas
+    if (len(array) == 0):
+        print("El array está vacio")
+        return array
     indiceMayorProbabilidad = 0
     mayorProbabilidad = 0
     for i in range(0, len(array)):
@@ -50,24 +53,45 @@ def colocarVacunatorios(array):
     # Retornar arreglo
     return array
 
-def calcularFuncionObjetivo():
-    print("funcion objetivo")
+def calcularFuncionObjetivo(comunas):
+    costo = 0
+    for i in comunas:
+        for j in range(0, len(vacunatorios)):
+            if (vacunatorios[j][0][0] == i):
+                costo += vacunatorios[j][1]
+    return costo
 
 def verificarRestricciones():
     print("verificar restricciones")
 
-# Programa
-array1 = agregarProbabilidades(vacunatorios, 3)
-for i in array1:
-    print(i)
-array2 = colocarVacunatorios(array1)
-for i in array2:
-    print(i)
-array3 = colocarVacunatorios(array2)
-for i in array3:
-    print(i)
-array4 = colocarVacunatorios(array3)
-for i in array4:
-    print(i)
+def sumarUnoIndicesResultado(array):
+    for i in range(0, len(array)):
+        array[i] += 1
+    return array
 
-print(colocadosEn)
+# Programa
+costoMenor = 2000
+colocadosMenor = []
+for i in range(0, 20):
+    colocadosEn = []
+    # Numero aleatorio
+    numeroRandom = random.randint(0, 100000)
+    # Agregamos probabilidades a cada comuna
+    array0 = vacunatorios.copy()
+    array1 = agregarProbabilidades(array0, numeroRandom)
+    # Calculamos
+    while (len(array0) != 0 ):
+        array0 = colocarVacunatorios(array0)
+
+    costoTotal = calcularFuncionObjetivo(colocadosEn)
+    print("Costo total: ", costoTotal)
+
+    colocados = sumarUnoIndicesResultado(colocadosEn)
+    if (costoMenor > costoTotal):
+        costoMenor = costoTotal
+        colocadosMenor = colocados
+    print("Colocados en: ", colocados)
+    print("------------------------------------------------")
+
+print("Costo menor: ", costoMenor)
+print("Menor: ", colocadosMenor)
