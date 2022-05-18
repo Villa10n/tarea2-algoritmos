@@ -61,24 +61,23 @@ def calcularFuncionObjetivo(comunas):
                 costo += vacunatorios[j][1]
     return costo
 
-def verificarRestricciones():
-    print("verificar restricciones")
-
 def sumarUnoIndicesResultado(array):
     for i in range(0, len(array)):
         array[i] += 1
     return array
 
 # Programa
-costoMenor = 2000
+costoMenorGlobal = 2000
 colocadosMenor = []
 for i in range(0, 20):
+    # Numero de iteracion
+    print("Iteración: ", i+1)
     colocadosEn = []
     # Numero aleatorio
-    numeroRandom = random.randint(0, 100000)
+    seed = random.randint(0, 100000)
     # Agregamos probabilidades a cada comuna
     array0 = vacunatorios.copy()
-    array1 = agregarProbabilidades(array0, numeroRandom)
+    array1 = agregarProbabilidades(array0, seed)
     # Calculamos
     while (len(array0) != 0 ):
         array0 = colocarVacunatorios(array0)
@@ -87,11 +86,11 @@ for i in range(0, 20):
     print("Costo total: ", costoTotal)
 
     colocados = sumarUnoIndicesResultado(colocadosEn)
-    if (costoMenor > costoTotal):
-        costoMenor = costoTotal
+    if (costoMenorGlobal > costoTotal):
+        costoMenorGlobal = costoTotal
         colocadosMenor = colocados
     print("Colocados en: ", colocados)
     print("------------------------------------------------")
 
-print("Costo menor: ", costoMenor)
-print("Menor: ", colocadosMenor)
+print("Costo menor global: ", costoMenorGlobal)
+print("Colocados global en: ", colocadosMenor)
